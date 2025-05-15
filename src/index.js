@@ -4,7 +4,12 @@ const handlebars = require('express-handlebars');
 const path = require('path');
 const app = express();
 const port = 3333;
+
 const route = require('./routers');
+const db = require('./config/db');
+
+// DB connect
+db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
 // HTTP logger
@@ -18,9 +23,7 @@ app.engine(
     }),
 );
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/views'));
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
 route(app);
-app.listen(port, () =>
-    console.log(`example app listening at localhost:${port}`),
-);
+app.listen(port, () => console.log(`listening at localhost:${port}`));
