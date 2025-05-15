@@ -1,8 +1,8 @@
 class SiteControoler {
-            // [GET] /Site
+    // [GET] /Site
     index(red, res) {
-                res.render('home');
+        res.render('home');
     }
 }
 
-    module.exports = new SiteControoler();
+module.exports = new SiteControoler();

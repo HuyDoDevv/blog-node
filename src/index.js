@@ -1,10 +1,10 @@
-        const express = require('express');
+const express = require('express');
 const morgan = require('morgan');
-            const handlebars = require('express-handlebars');
+const handlebars = require('express-handlebars');
 const path = require('path');
 const app = express();
 const port = 3333;
-            const route = require('./routers');
+const route = require('./routers');
 
 app.use(express.static(path.join(__dirname, 'public')));
 // HTTP logger
