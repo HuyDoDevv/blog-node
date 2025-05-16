@@ -1,0 +1,27 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tên</th>
+      <th scope="col">Nội dung</th>
+      <th scope="col">Mô tả</th>
+      <th scope="col">Số view</th>
+      <th scope="col">Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each blogs}}
+      <tr>
+        <th scope="row">{{sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.content}}</td>
+        <td>{{this.desc}}</td>
+        <td>{{this.view}}</td>
+        <td>
+          <a href="../blogs/{{this._id}}/edit" type="button" class="btn btn-warning">Edit</a>
+          <a href="" type="button" class="btn btn-danger">Delete</a>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -8,18 +8,27 @@ const port = 3333;
 const route = require('./routers');
 const db = require('./config/db');
 
+const methodOverride = require('method-override');
+
 // DB connect
 db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
 // HTTP logger
 app.use(morgan('combined'));
+
+// Method override
+app.use(methodOverride('_method'));
 
 // Template engine
 app.engine(
     'hbs',
     handlebars.engine({
         extname: '.hbs',
+        helpers: {
+            sum: (a, b) => a + b,
+        },
     }),
 );
 app.set('view engine', 'hbs');

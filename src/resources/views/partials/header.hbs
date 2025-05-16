@@ -1,16 +1,19 @@
 <nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <div class="container-fluid container">
+    <div class="action-links">
+      <a class="navbar-brand m-3" href="/">Home</a>
+      <a class="navbar-brand m-3" href="/blogs">Blog</a>
+    </div>
+    <div class="btn-group text-right">
+      <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      </button>
+      <ul class="dropdown-menu">
+        <li class="p-1 m-1"><a href="/blogs/create" class="text-decoration-none text-black">Thêm bài viết</a></li>
+        <li class="p-1 m-1"><hr class="dropdown-divider"></li>
+        <li class="p-1 m-1"><a href="/me/my-blogs" class="text-decoration-none text-black">Bài viết của tôi</a></li>
+        <li class="p-1 m-1"><hr class="dropdown-divider"></li>
+        <li class="p-1 m-1"><a href="" class="text-decoration-none text-black">Đăng xuất</a></li>
+      </ul>
+    </div>
   </div>
 </nav>

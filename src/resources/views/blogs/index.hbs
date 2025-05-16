@@ -1,0 +1,16 @@
+<div class="row">
+  {{#each blogs}}
+    <div class="m-2 col-5 card">
+      <div class="card-body">
+        <a href="/blogs/{{this.slug}}">
+          <h5 class="card-title">{{this.name}}</h5>
+        </a>
+        <p class="card-text">{{this.content}}</p>
+        <p class="card-text">{{this.desc}}</p>
+        <p class="card-text">{{this.views}}</p>
+        <a href="blogs/{{this.slug}}" class="btn btn-primary">Chi tiết</a>
+        <a href="blogs/{{this.slug}}" class="btn btn-primary">Update</a>
+      </div>
+    </div>
+  {{/each}}
+</div>
