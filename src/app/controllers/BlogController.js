@@ -20,7 +20,7 @@ class BlogControoler {
     show(req, res, next) {
         Blog.findOne({ slug: req.params.slug })
             .then((blog) =>
-                res.render('blogs', {
+                res.render('blogs/show', {
                     blog: mongooseToObject(blog),
                 }),
             )
@@ -34,12 +34,9 @@ class BlogControoler {
 
     // [POST] /store
     store(req, res, next) {
-        const formData = req.body;
-        console.log(formData.slug);
-        console.log(formData);
-        Blog(formData)
+        Blog(req.body)
             .save()
-            .then(() => res.redirect(`/blogs/${formData.slug}`))
+            .then(() => res.redirect('/me/my-blogs'))
             .catch(next);
     }
 
