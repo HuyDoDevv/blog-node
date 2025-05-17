@@ -1,5 +1,7 @@
 const { mongoose } = require('mongoose');
+const slug = require('mongoose-slug-updater');
 
+mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 
 const Blog = new Schema(
@@ -8,21 +10,12 @@ const Blog = new Schema(
         content: { type: String },
         desc: { type: String },
         view: { type: Number },
-        slug: { type: String },
+        slug: { type: String, slug: 'name', unique: true },
+        author: { type: String },
     },
     {
         timestamps: true,
     },
 );
-
-Blog.pre('save', function (next) {
-    if (!this.slug && this.name) {
-        this.slug = this.name
-            .toLowerCase()
-            .replace(/ /g, '-')
-            .replace(/[^\w-]+/g, '');
-    }
-    next();
-});
 
 module.exports = mongoose.model('Blog', Blog);

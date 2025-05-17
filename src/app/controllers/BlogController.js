@@ -6,56 +6,67 @@ const {
 
 class BlogControoler {
     // [GET] /blog
-    async index(req, res) {
-        try {
-            const blogs = await Blog.find({});
-            res.render('blogs', {
-                blogs: mutipleMongooseToObject(blogs),
-            });
-        } catch (error) {
-            res.status(400).json({ error: 'Error!' });
-        }
+    index(req, res, next) {
+        Blog.find({})
+            .then((blogs) =>
+                res.render('blogs', {
+                    blogs: mutipleMongooseToObject(blogs),
+                }),
+            )
+            .catch(next);
     }
 
-    async show(req, res) {
-        try {
-            const blog = await Blog.findOne({ slug: req.params.slug });
-            res.render('blogs/show', {
-                blog: mongooseToObject(blog),
-            });
-        } catch (error) {
-            res.status(400).json({ error: 'Error!' });
-        }
+    // [GET] /blog/:slug
+    show(req, res, next) {
+        Blog.findOne({ slug: req.params.slug })
+            .then((blog) =>
+                res.render('blogs', {
+                    blog: mongooseToObject(blog),
+                }),
+            )
+            .catch(next);
     }
 
+    // [GET] /create
     create(req, res) {
         res.render('blogs/create');
     }
 
-    store(req, res) {
-        const blog = new Blog(req.body);
-        blog.save();
-        res.redirect(`/blogs/${blog.slug}`);
+    // [POST] /store
+    store(req, res, next) {
+        const formData = req.body;
+        console.log(formData.slug);
+        console.log(formData);
+        Blog(formData)
+            .save()
+            .then(() => res.redirect(`/blogs/${formData.slug}`))
+            .catch(next);
     }
 
-    async edit(req, res) {
-        try {
-            const blog = await Blog.findById(req.params.id);
-            res.render('blogs/edit', {
-                blog: mongooseToObject(blog),
-            });
-        } catch (error) {
-            res.status(400).json({ error: 'Error!' });
-        }
+    // [POST] /blog/:id
+    edit(req, res, next) {
+        Blog.findById(req.params.id)
+            .then((blog) =>
+                res.render('blogs/edit', {
+                    blog: mongooseToObject(blog),
+                }),
+            )
+            .catch(next);
     }
 
-    async update(req, res) {
-        try {
-            await Blog.updateOne({ _id: req.params.id }, req.body);
-            res.redirect('/me/my-blogs');
-        } catch (error) {
-            res.status(400).json({ error: 'Error!' });
-        }
+    // [PUT] /blog/:id
+    update(req, res, next) {
+        Blog.updateOne({ _id: req.params.id }, req.body)
+            .then(() => res.redirect('/me/my-blogs'))
+            .catch(next);
+    }
+
+    // [DELETE] /blog/:id
+    delete(req, res, next) {
+        Blog.findById(req.params.id)
+            .deleteOne()
+            .then(() => res.redirect('/me/my-blogs'))
+            .catch(next);
     }
 }
 
