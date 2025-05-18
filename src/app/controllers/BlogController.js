@@ -7,7 +7,7 @@ const {
 class BlogControoler {
     // [GET] /blog
     index(req, res, next) {
-        Blog.find({})
+        Blog.find()
             .then((blogs) =>
                 res.render('blogs', {
                     blogs: mutipleMongooseToObject(blogs),
@@ -60,9 +60,22 @@ class BlogControoler {
 
     // [DELETE] /blog/:id
     delete(req, res, next) {
-        Blog.findById(req.params.id)
-            .deleteOne()
+        Blog.delete({ _id: req.params.id })
             .then(() => res.redirect('/me/my-blogs'))
+            .catch(next);
+    }
+
+    // [PATCH] /blog/:id/retore
+    retore(req, res, next) {
+        Blog.restore({ _id: req.params.id })
+            .then(() => res.redirect('/me/trash'))
+            .catch(next);
+    }
+
+    // [DELETE] /blog/:id/forceDelete
+    forceDelete(req, res, next) {
+        Blog.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect('/me/trash'))
             .catch(next);
     }
 }
