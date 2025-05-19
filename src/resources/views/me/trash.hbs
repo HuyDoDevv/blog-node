@@ -9,23 +9,23 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Tên</th>
-        <th scope="col">Nội dung</th>
-        <th scope="col">Mô tả</th>
-        <th scope="col">Số view</th>
-        <th scope="col">Thao tác</th>
+        <th class="text-nowrap" scope="col">#</th>
+        <th class="text-nowrap" scope="col">Tên</th>
+        <th class="text-nowrap" scope="col">Nội dung</th>
+        <th class="text-nowrap" scope="col">Mô tả</th>
+        <th class="text-nowrap" scope="col">Số view</th>
+        <th class="text-nowrap" scope="col">Thao tác</th>
       </tr>
     </thead>
     <tbody>
       {{#each blogs}}
         <tr>
-          <th scope="row">{{sum @index 1}}</th>
+          <td scope="row">{{sum @index 1}}</td>
           <td>{{this.name}}</td>
           <td>{{this.content}}</td>
           <td>{{this.desc}}</td>
           <td>{{this.view}}</td>
-          <td>
+          <td class="text-nowrap">
             <a href="../blogs/{{this._id}}/edit" type="button" class="btn btn-warning btn-restore" data-id="{{this._id}}">Restore</a>
             <a href="" type="button" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#delete-blog-modal">Delete</a>
           </td>

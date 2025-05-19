@@ -1,18 +1,31 @@
-<div class="container">
+<form name="container-form" method="POST" action="/blogs/handle-actions">
   <div class="heading-warpper">
     <h2>
       Danh sách bài viết
     </h2>
     {{#if countDelete}}
-      <a class="text-decoration-none" href="/me/trash">Danh sách bài viết đã xoá ({{countDelete}})</a>
+      <a class="text-decoration-none" href="/me/trash">Danh sách bài viết đã xoá ({{countDelete 'name' _sort}})</a>
     {{/if}}
+
+    <div class="d-flex align-items-center warpper-select">
+      <select class="me-3 form-select" name="action" required>
+        <option value="">---Hành động---</option>
+        <option value="delete">Xoá</option>
+      </select>
+      <button class="btn btn-primary text-nowrap btn-action-all disabled">Thực hiện</button>
+    </div>
   </div>
 
-  <table class="table">
+<table class="table">
     <thead>
       <tr>
+        <th class="text-nowrap" scope="col">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="check_all" id="checkboxAll">
+        </div>
+        </th>
         <th class="text-nowrap" scope="col">#</th>
-        <th class="text-nowrap" scope="col">Tên</th>
+        <th class="text-nowrap" scope="col">Tên {{{sortable 'name' _sort}}}</th>
         <th class="text-nowrap" scope="col">Nội dung</th>
         <th class="text-nowrap" scope="col">Mô tả</th>
         <th class="text-nowrap" scope="col">Số view</th>
@@ -22,7 +35,12 @@
     <tbody>
       {{#each blogs}}
         <tr>
-          <th scope="row">{{sum @index 1}}</th>
+          <td scope="row">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="blogIds[]" value="{{this._id}}">
+            </div>
+          </td>
+          <td scope="row">{{sum @index 1}}</td>
           <td>{{this.name}}</td>
           <td>{{this.content}}</td>
           <td>{{this.desc}}</td>
@@ -41,6 +59,7 @@
       {{/each}}
     </tbody>
   </table>
+</form>
 
   <div class="modal fade" id="delete-blog-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -59,17 +78,17 @@
       </div>
     </div>
   </div>
-
   <form method="POST" name="delete-blog-form"></form>
-
-</div>
-
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var blogId
     var deleteForm = document.forms['delete-blog-form']
+    var containerForm = document.forms['container-form']
     var btnDeleteBlog = document.getElementById('btn-delete-blog')
+    var checkboxAll = $('#checkboxAll')
+    var btnActionAll = $('.btn-action-all')
+    var blogItemCheckbox = $('input[name="blogIds[]"]')
 
     $('#delete-blog-modal').on('show.bs.modal', function(event){
       var button = $(event.relatedTarget);
@@ -80,5 +99,31 @@
       deleteForm.action = `/blogs/${blogId}?_method=DELETE`;
       deleteForm.submit()
     }
+
+    checkboxAll.change(function() {
+      var isCheckerAllBtn = $(this).prop('checked')
+      blogItemCheckbox.prop('checked', isCheckerAllBtn)
+      renderCheckAllSubmitBtn()
+    })
+
+
+    blogItemCheckbox.change(function() {
+      var isCheckerAllValue = blogItemCheckbox.length == $('input[name="blogIds[]"]:checked').length
+      checkboxAll.prop('checked', isCheckerAllValue)
+      renderCheckAllSubmitBtn()
+    })
+
+    function renderCheckAllSubmitBtn() {
+      var countCheckedBtn = $('input[name="blogIds[]"]:checked').length
+      btnActionAll.toggleClass('disabled', countCheckedBtn === 0);
+    }
+
+    btnActionAll.on('submit', function(e) {
+      var isSubmitTable = !$(this).hasClass('disabled')
+      if(isSubmitTable) {
+        e.preventDefault()
+      }
+    })
+
   });
 </script>

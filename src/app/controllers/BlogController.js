@@ -78,6 +78,19 @@ class BlogControoler {
             .then(() => res.redirect('/me/trash'))
             .catch(next);
     }
+
+    // [POST] /blog/handle-actions
+    handleActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                Blog.delete({ _id: { $in: req.body.blogIds } })
+                    .then(() => res.redirect('/me/my-blogs'))
+                    .catch(next);
+                break;
+            default:
+                res.json({ message: 'Action is invalid!' });
+        }
+    }
 }
 
 module.exports = new BlogControoler();

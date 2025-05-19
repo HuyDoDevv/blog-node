@@ -4,8 +4,16 @@ const { mutipleMongooseToObject } = require('../../util/mongoose');
 class MeController {
     // [GET] /blog
     index(req, res, next) {
+        let blogQuery = Blog.find({});
+
+        if (Object.prototype.hasOwnProperty.call(req.query, '_sort')) {
+            blogQuery = blogQuery.sort({
+                [req.query.column]: req.query.type,
+            });
+        }
+
         Promise.all([
-            Blog.find({}),
+            blogQuery,
             Blog.countDocumentsWithDeleted({ deleted: true }),
         ])
             .then(([blogs, countDelete]) =>
